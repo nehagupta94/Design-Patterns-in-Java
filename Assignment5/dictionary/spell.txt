@@ -1,0 +1,5 @@
+sky::[ski]
+atop::[stop]
+tyme::[time]
+horizin::[horizon]
+swyrls::[swirls]

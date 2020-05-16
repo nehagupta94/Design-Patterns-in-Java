@@ -1,0 +1,57 @@
+<project name="dictionary" default="compile_all" basedir="..">
+
+  <property name="BUILD.compiler"       value="modern"/>
+  <property name="src"                  value="src"/>
+  <property name="BUILD"                value="src/BUILD"/>
+  <property name="classes"              value="${BUILD}/classes"/>
+
+  <target name="all" depends="compile_all"/>
+
+  <target name="compile_all"
+          depends="dictionary"/>
+
+  <target name="clean">
+       <delete dir="${BUILD}"/>
+  </target>
+
+  <!-- Prepare target directories -->
+  <target name="prepare">
+        <mkdir dir="${BUILD}"/>
+        <mkdir dir="${classes}"/>
+  </target>
+
+ <target name="jar">
+        <mkdir dir="${BUILD}/jar"/>
+        <jar destfile="${BUILD}/jar/dictionary.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="driver.Driver"/>
+            </manifest>
+        </jar>
+    </target>
+
+  <!-- ** means all subdirectories as well -->
+  <!-- * means all files in the current directory -->
+  <!-- for just java files use *.java -->
+
+  <target name="dictionary" depends="prepare">
+    <javac includeantruntime="false" srcdir="${src}"
+	           includes="dictionary/**"
+           excludes="**/package.html"
+           destdir="${classes}"
+           classpath="${classes}"
+           debug="on"
+           optimize="on"
+           deprecation="off"/>
+  </target>
+
+<target name="run" depends="jar">
+        <java jar="${BUILD}/jar/dictionary.jar"  fork="true">
+	<arg value="${inputFilename}"/> <!-- input file -->
+	<arg value="${acceptableWordsFilename}"/> <!-- acceptable words filename -->
+	<arg value="${k}"/> <!-- topK window size -->
+	<arg value="${topKOutputFilename}"/> <!-- topK output file name -->
+	<arg value="${spellCheckOutputFilename}"/> <!-- spell check output file name -->
+	    </java>
+    </target>
+
+</project>

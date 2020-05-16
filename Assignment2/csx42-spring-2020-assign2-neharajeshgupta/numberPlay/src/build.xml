@@ -1,0 +1,58 @@
+<project name="numberPlay" default="compile_all" basedir="..">
+
+  <property name="BUILD.compiler"       value="modern"/>
+  <property name="src"                  value="src"/>
+  <property name="BUILD"                value="src/BUILD"/>
+  <property name="classes"              value="${BUILD}/classes"/>
+
+  <target name="all" depends="compile_all"/>
+
+  <target name="compile_all"
+          depends="numberPlay"/>
+
+  <target name="clean">
+       <delete dir="${BUILD}"/>
+  </target>
+
+  <!-- Prepare target directories -->
+  <target name="prepare">
+        <mkdir dir="${BUILD}"/>
+        <mkdir dir="${classes}"/>
+  </target>
+
+ <target name="jar">
+        <mkdir dir="${BUILD}/jar"/>
+        <jar destfile="${BUILD}/jar/numberPlay.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="numberPlay.driver.Driver"/>
+            </manifest>
+        </jar>
+    </target>
+
+  <!-- ** means all subdirectories as well -->
+  <!-- * means all files in the current directory -->
+  <!-- for just java files use *.java -->
+
+  <target name="numberPlay" depends="prepare">
+    <javac includeantruntime="false" srcdir="${src}"
+	           includes="numberPlay/**"
+           excludes="**/package.html"
+           destdir="${classes}"
+           classpath="${classes}"
+           debug="on"
+           optimize="on"
+           deprecation="off"/>
+  </target>
+
+<target name="run" depends="jar">
+        <java jar="${BUILD}/jar/numberPlay.jar"  fork="true">
+	<arg value="${inputNumStream}"/> <!-- input file -->
+	<arg value="${runAvgWindowSize}"/> <!-- window size of the running average calculator. -->
+	<arg value="${runAvgOutFile}"/> <!-- output file to which running averages are written. -->
+	<arg value="${k}"/> <!-- max size of the list of the current top K numbers among the processed numbers in the stream. -->
+	<arg value="${topKNumOutFile}"/> <!-- output file to which top K numbers are written. -->
+	<arg value="${numPeaksOutFile}"/> <!-- output file to which the peaks in the stream of numbers, along with the line numbers, are written. -->
+        </java>	
+    </target>
+
+</project>

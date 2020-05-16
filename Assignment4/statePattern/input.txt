@@ -1,0 +1,13 @@
+item:Heineken
+money:10000
+item:Miller
+item:KeyStone
+money:4000
+item:Corona
+item:StellaArtois
+money:40000
+item:BudLight
+item:Modelo
+money:80000
+item:Budweiser
+item:Yuengling

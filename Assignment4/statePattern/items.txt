@@ -1,0 +1,9 @@
+basic:KeyStone
+basic:Miller
+basic:BudLight
+moderatelyExpensive:Heineken
+moderatelyExpensive:Budweiser
+moderatelyExpensive:Corona
+superExpensive:StellaArtois
+superExpensive:Modelo
+superExpensive:Yuengling

@@ -1,0 +1,3 @@
+A new student has registered for design patterns in the spring of 2020. During the semester the students
+are going to learn good design principles and design guidelines to be followed when developing applications.
+All programming assignments are to be done in Java.

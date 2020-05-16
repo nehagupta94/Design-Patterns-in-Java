@@ -1,0 +1,77 @@
+<project name="primeDetectorSockets" default="compile_all" basedir="..">
+
+    <property name="BUILD.compiler"       value="modern"/>
+    <property name="src"                  value="src"/>
+    <property name="BUILD"                value="src/BUILD"/>
+    <property name="classes"              value="${BUILD}/classes"/>
+
+    <target name="all" depends="compile_all"/>
+
+    <target name="compile_all"
+            depends="primeDetectorSockets"/>
+
+    <target name="clean">
+        <delete dir="${BUILD}"/>
+    </target>
+
+    <!-- Prepare target directories -->
+    <target name="prepare">
+        <mkdir dir="${BUILD}"/>
+        <mkdir dir="${classes}"/>
+    </target>
+
+
+
+    <!-- ** means all subdirectories as well -->
+    <!-- * means all files in the current directory -->
+    <!-- for just java files use *.java -->
+
+    <target name="primeDetectorSockets" depends="prepare">
+        <javac includeantruntime="false" srcdir="${src}"
+               includes="primeDetectorSockets/**"
+               excludes="**/package.html"
+               destdir="${classes}"
+               classpath="${classes}"
+               debug="on"
+               optimize="on"
+               deprecation="off"/>
+    </target>
+
+    <target name="prime-detector-jar">
+        <mkdir dir="${BUILD}/jar"/>
+        <jar destfile="${BUILD}/jar/primeDetector.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="primeDetectorSockets.primeDetector.driver.Driver"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="persister-service-jar">
+        <mkdir dir="${BUILD}/jar"/>
+        <jar destfile="${BUILD}/jar/persisterService.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="primeDetectorSockets.persisterService.driver.Driver"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run-prime-detector" depends="prime-detector-jar">
+        <java jar="${BUILD}/jar/primeDetector.jar" fork="true">
+            <arg value="${inputStream}"/> <!-- input file -->
+            <arg value="${numThreads}"/> <!-- No of threads to be used -->
+            <arg value="${capacity}"/> <!-- Capacity of the results data structure. -->
+            <arg value="${persisterServiceIp}"/> <!-- IP Address of the PersisterService -->
+            <arg value="${persisterServicePort}"/> <!-- Port number on which the PersisterService is listening for data. -->
+            <arg value="${debugValue}"/> <!-- an integer that controls what is printed on stdout. -->
+        </java>
+    </target>
+
+    <target name="run-persister-service" depends="persister-service-jar">
+        <java jar="${BUILD}/jar/persisterService.jar" fork="true">
+            <arg value="${port}"/> <!-- input file -->
+            <arg value="${outputFile}"/> <!-- No of threads to be used -->
+        </java>
+    </target>
+
+</project>
+
